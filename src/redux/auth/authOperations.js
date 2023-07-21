@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = 'https://connections-api.herokuapp.com - 1afd9a97-a6a4-4fd2-81ee-6a2ecf4102d7';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 const SIGN_UP_ENDPOINT = '/users/signup';
 const SIGN_IN_ENDPOINT = '/users/login';
