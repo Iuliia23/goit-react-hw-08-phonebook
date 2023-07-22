@@ -19,13 +19,13 @@ const ContactItem = ({ contact }) => {
   };
 
   return (
-    <Box sx={{ marginBottom: '10px', display: 'flex' }}>
+    <Box sx={{ marginBottom: '20px', display: 'flex' }}>
       <Box sx={{ flex: '1', display: 'flex', alignItems: 'center' }}>
-        <PersonIcon sx={{ marginRight: '10px' }} />
+        <PersonIcon sx={{ marginRight: '20px' }} />
         <Typography variant="h6">{contact.name}</Typography>
       </Box>
       <Box sx={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <PhoneIcon sx={{ marginRight: '10px' }} />
+        <PhoneIcon sx={{ marginRight: '20px' }} />
         <Typography variant="body1">{contact.number}</Typography>
       </Box>
       <Box>

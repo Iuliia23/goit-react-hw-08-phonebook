@@ -32,8 +32,10 @@ const Home = () => {
         backgroundPosition: 'center',
       }}
     >
-       <span style={{ color: ' #0095b6', padding: '20px', textAlign: 'center'}}>Welcome to Phonebook!</span>
-<span style={{ color: ' #0095b6', padding: '20px', textAlign: 'justify'}}>PhoneBook app is an easy to use contact manager app that gives you facility of saving and viewing your contacts, so that you never lose your contacts. Try it today!</span>
+       <span style={{ color: ' #010101', padding: '20px', textAlign: 'center'}}>Welcome to Phonebook!</span>
+<span style={{ color: ' #010101', padding: '20px', textAlign: 'justify'}}><br>PhoneBook app is an easy to use contact manager app that gives</br>
+<br>you facility of saving and viewing your contacts,</br> 
+<br>so that you never lose your contacts. Try it today!</br></span>
 <Button variant="contained" onClick={handleButtonClick}>
         Get started
       </Button>

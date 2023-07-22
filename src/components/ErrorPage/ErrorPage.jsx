@@ -24,9 +24,6 @@ const ErrorPage = () => {
       <Typography variant="h4" sx={{ marginBottom: 2 }}>
         Something went wrong!
       </Typography>
-      {/* { <Typography variant="body1">
-        Maybe you typed something wrong?
-      </Typography> } */}
       {isReloading ? (
         <CircularProgress />
       ) : (
