@@ -1,25 +1,39 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { authOperations, authSelectors } from 'redux/auth';
+import { logOut } from '../../redux/auth/operations';
+import { selectUser } from '../../redux/auth/selectors';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { styled } from '@mui/system';
 
-import {MenuContainer, MenuBox, MenuTitle, MenuBtn } from './UserMenu.styled';
+const UserMenuContainer = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 20,
+});
+
+const UserName = styled(Typography)({
+  marginRight: '20px',
+});
 
 const UserMenu = () => {
   const dispatch = useDispatch();
-  const name = useSelector(authSelectors.getUserName);
+  const user = useSelector(selectUser);
+
+  const onLogout = () => {
+    dispatch(logOut());
+  };
 
   return (
-    <MenuContainer>
-      <MenuBox>
-        <MenuTitle> Welcome, {name}</MenuTitle>
-      </MenuBox>
-      <MenuBtn
-        type="button"
-        onClick={() => dispatch(authOperations.logOut())}
-      >
-        Log Out
-      </MenuBtn>
-    </MenuContainer>
+    <UserMenuContainer>
+      <Avatar sx={{ width: 32, height: 32, borderRadius: '50%' }} />
+      <UserName>{user.name}</UserName>
+      <Button variant="outlined" onClick={onLogout} endIcon={<LogoutIcon />}>
+        Logout
+      </Button>
+    </UserMenuContainer>
   );
-}
+};
 
 export default UserMenu;

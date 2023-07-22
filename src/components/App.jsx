@@ -1,74 +1,76 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, lazy, Suspense} from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import PrivateRoute from '../routes/PrivatRoutes'
-import PublicRoute from '../routes/PublicRoutes';
-import { authOperations, authSelectors } from 'redux/auth';
-import Loader from './Loader/Loader';
-import AppBar from './AppBar/AppBar';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect, lazy } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './Layout/Layout';
+import Home from './Home/Home';
+import NotFound from './NotFound/NotFound';
+import { useDispatch } from 'react-redux';
+import { refreshUser } from 'redux/auth/operations';
+import { PrivateRoute } from './PrivateRoute';
+import { PublicRoute } from './PublicRoute';
+import { useAuth } from 'redux/auth/useAuth';
+import Loader from './Loader/Loader';
+import ErrorPage from './ErrorPage/ErrorPage';
 
-const PageHome = lazy(() => import('pages/PageHome'));
-const PageRegistration = lazy(() => import('pages/PageRegistration'));
-const PageLogin = lazy(() => import('pages/PageLogin'));
-const PageContacts = lazy(() => import('pages/PageContacts'));
+const RegisterPage = lazy(() =>
+  import('../pages/RegisterPage')
+);
+const ContactsPage = lazy(() =>
+  import('../pages/ContactsPage')
+);
 
-const App = () => {
+const LoginPage = lazy(() =>
+  import('../pages/Login')
+);
+
+
+export const App = () => {
   const dispatch = useDispatch();
-  const isFetchingCurrentUser = useSelector(authSelectors.getIsFetchingCurrent);
-
   useEffect(() => {
-    dispatch(authOperations.fetchCurrentUser());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  return (
-    <>
-      {!isFetchingCurrentUser && (
-        <>
-          <AppBar />
-          <Suspense fallback={<Loader />}>
-            <Routes>
-              <Route
-                path="/"
-                exact
-                element={
-                  <PublicRoute>
-                    <PageHome />
-                  </PublicRoute>
-                }
+  const { isRefreshing, error } = useAuth();
+
+
+  if (error) {
+    return <ErrorPage />;
+  }
+
+  return isRefreshing ? (
+    <Loader />
+  ) : (
+    <div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+
+          <Route
+            path="/register"
+            element={
+              <PublicRoute
+                redirectTo="/contacts"
+                component={<RegisterPage />}
               />
-              <Route
-                path="register"
-                element={
-                  <PublicRoute redirectTo="/contacts" restricted>
-                    <PageRegistration />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="login"
-                element={
-                  <PublicRoute redirectTo="/contacts" restricted>
-                    < PageLogin />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                path="contacts"
-                element={
-                  <PrivateRoute>
-                    <PageContacts />
-                  </PrivateRoute>
-                }
-              />
-              <Route path="*" element={<Navigate to="/" />} />              
-            </Routes>
-          </Suspense>
-          <ToastContainer autoClose={3700} position="top-center" />
-        </>
-      )}
-    </>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute redirectTo="/contacts" component={<LoginPage />} />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+            }
+          />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <ToastContainer autoClose={2000} />
+    </div>
   );
 };
-
-export default App;

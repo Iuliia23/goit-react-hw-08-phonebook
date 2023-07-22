@@ -1,45 +1,53 @@
-import ContactItem from '../ContactItem/ContactItem';
-import React from 'react';
-import Loader from '../Loader/Loader';
-import { List, Error } from './ContactList.styled';
-import { useSelector} from 'react-redux';
-import { useFetchContactsQuery} from 'redux/contacts/contactsApi';
-import { getFilter } from 'redux/contacts/contactsSelectors';
+import React, { useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchContacts } from 'redux/contacts/operations';
+import ContactItem from 'components/ContactItem/ContactItem';
+import { getContacts, getIsLoading } from 'redux/contacts/selectors';
+import { getStatusFilter } from 'redux/contacts/selectors';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import CircularProgress from '@mui/material/CircularProgress';
+import SearchIcon from '@mui/icons-material/Search';
 
 const ContactList = () => {
-  const { data: contacts, error, isLoading } = useFetchContactsQuery();
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getStatusFilter);
+  const isLoading = useSelector(getIsLoading);
 
-  const filter = useSelector(getFilter);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-  const filterContacts = () => {
-    return (
-      contacts &&
-      contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filter.toLowerCase())
-      )
-    );
-  };
+  if (!contacts) {
+    return <CircularProgress />; 
+  }
 
-  const contactList = filterContacts();
-  const renderContacts = contacts && contactList.length > 0;
- 
-
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   return (
-    <>
+    <Box sx={{ padding: '20px' }}>
+      <Typography variant="h5" sx={{ marginBottom: '20px' }}>
+        <SearchIcon sx={{ marginRight: '20px' }} />
+        Contact List
+      </Typography>
       <List>
-      {renderContacts &&
-        contactList.map(({ id, name, number }) => (
-          <ContactItem id={id} key={id} name={name} number={number} />
+        {filteredContacts.map(contact => (
+          <ContactItem key={contact.id} contact={contact} />
         ))}
-      {isLoading && <Loader />}
-      {error && (
-        <Error>Try adding phone details or contact your administrator</Error>
+      </List>
+      {isLoading && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          <CircularProgress size={20} />
+          <Typography variant="body2" sx={{ marginLeft: '20px' }}>
+            Updating list...
+          </Typography>
+        </Box>
       )}
-    </List>
-      
-  
-    </>
+    </Box>
   );
 };
 

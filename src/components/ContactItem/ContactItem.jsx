@@ -1,21 +1,50 @@
-import { Item, Button } from './ContactItem.styled'
-import { RotatingLines } from 'react-loader-spinner';
-import { useDeleteContactMutation } from 'redux/contacts/contactsApi';
+import React, { useState } from 'react';
+import DeleteConfirmation from 'components/ContactItem/DeleteConfirmation/DeleteConfirmation';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import PersonIcon from '@mui/icons-material/Person';
+import PhoneIcon from '@mui/icons-material/Phone';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const ContactItem = ({ id, name, number}) => {
-    const [deleteContact, { isLoading: isDeleting }] = useDeleteContactMutation();
-  
-    return (
-        <Item key={id}>
-            <p>
-                {name}: {number} {' '}
-            </p>
-            <Button type="button" onClick={() => deleteContact(id)}
-        disabled={isDeleting}>
-               {isDeleting && <RotatingLines width="10" />}  Delete
-            </Button>
-        </Item>
-    );
+const ContactItem = ({ contact }) => {
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
+  const handleDeleteClick = () => {
+    setIsConfirmingDelete(true);
+  };
+
+  const handleCancelDelete = () => {
+    setIsConfirmingDelete(false);
+  };
+
+  return (
+    <Box sx={{ marginBottom: '10px', display: 'flex' }}>
+      <Box sx={{ flex: '1', display: 'flex', alignItems: 'center' }}>
+        <PersonIcon sx={{ marginRight: '10px' }} />
+        <Typography variant="h6">{contact.name}</Typography>
+      </Box>
+      <Box sx={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <PhoneIcon sx={{ marginRight: '10px' }} />
+        <Typography variant="body1">{contact.number}</Typography>
+      </Box>
+      <Box>
+        <Button
+          variant="contained"
+          color="error"
+          startIcon={<DeleteIcon />}
+          onClick={handleDeleteClick}
+          style={{ position: 'relative' }}
+        >
+          Delete
+        </Button>
+      </Box>
+
+      {isConfirmingDelete && (
+        <DeleteConfirmation contact={contact} onCancel={handleCancelDelete} />
+      )}
+    </Box>
+  );
 };
 
 export default ContactItem;
