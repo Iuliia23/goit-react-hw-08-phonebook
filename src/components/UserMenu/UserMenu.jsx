@@ -4,7 +4,7 @@ import { selectUser } from '../../redux/auth/selectors';
 import defaultAvatar from '../../images/avatar.png'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-// import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { styled } from '@mui/system';
 
 const UserMenuContainer = styled('div')({
@@ -34,7 +34,7 @@ const UserMenu = () => {
         border-radius='50%'
       />
       <UserName>Welcome, {user.name}</UserName>
-      <Button variant="outlined" color="error" onClick={onLogout}>
+      <Button variant="outlined" color="error" onClick={onLogout} endIcon={<LogoutIcon />}>
         Logout
       </Button>
     </UserMenuContainer>
