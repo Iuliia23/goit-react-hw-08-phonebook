@@ -24,7 +24,7 @@ const Home = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        fontSize: 36,
+        fontSize: 48,
         color: '#000',
         backgroundImage: `url(${background})`,
         backgroundSize: 'cover',
@@ -32,9 +32,9 @@ const Home = () => {
         backgroundPosition: 'center',
       }}
     >
-       <span style={{ color: 'black', padding: '20px', textAlign: 'center'}}>Welcome to Phonebook!</span>
-<span style={{ color: 'red', padding: '20px', textAlign: 'justify'}}>Now you will exactly not forget your contacts!</span>
-<Button variant="contained" onClick={handleButtonClick}>
+       <span style={{ color: '#757575', padding: '1px', textAlign: 'center'}}>Welcome to Phonebook!</span>
+<span style={{ color: 'red', padding: '30px', textAlign: 'justify'}}>Now you will exactly not forget your contacts!</span>
+<Button variant="contained" color="error" onClick={handleButtonClick}>
         Get started
       </Button>
     </div>

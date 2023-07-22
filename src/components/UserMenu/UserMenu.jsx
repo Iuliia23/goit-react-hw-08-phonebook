@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../redux/auth/operations';
 import { selectUser } from '../../redux/auth/selectors';
-import Avatar from '@mui/material/Avatar';
+import defaultAvatar from '../../images/avatar.png'
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -27,9 +27,14 @@ const UserMenu = () => {
 
   return (
     <UserMenuContainer>
-      <Avatar sx={{ width: 32, height: 32, borderRadius: '50%' }} />
-      <UserName>{user.name}</UserName>
-      <Button variant="outlined" onClick={onLogout} endIcon={<LogoutIcon />}>
+       <img
+        src={defaultAvatar}
+        alt="Default Avatar"
+        width="46"
+        border-radius='50%'
+      />
+      <UserName>Welcome, {user.name}</UserName>
+      <Button variant="outlined" color="error" ButtononClick={onLogout} endIcon={<LogoutIcon />}>
         Logout
       </Button>
     </UserMenuContainer>

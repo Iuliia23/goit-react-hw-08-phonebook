@@ -99,7 +99,7 @@ const ContactForm = () => {
             margin="normal"
           />
 
-          <Button type="submit" variant="contained" sx={{ width: '40%' }}>
+          <Button type="submit" variant="contained" color="error" sx={{ width: '40%' }}>
             Add Contact
           </Button>
         </form>

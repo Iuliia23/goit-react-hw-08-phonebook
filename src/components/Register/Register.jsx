@@ -117,7 +117,7 @@ const Register = () => {
             required
           />
 
-          <Button type="submit" variant="contained" fullWidth>
+          <Button type="submit" variant="contained" color="error" fullWidth>
             Register
           </Button>
         </Box>
